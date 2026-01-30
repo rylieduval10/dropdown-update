@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseball Monster Dropdown Fix - Implementation Guide</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #dc2626;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        h2 {
+            color: #2d7a3e;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        h3 {
+            color: #475569;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #dc2626;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        pre code {
+            background: none;
+            color: #e2e8f0;
+            padding: 0;
+        }
+        .problem {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .problem h3 {
+            color: #dc2626;
+            margin-top: 0;
+        }
+        .solution {
+            background: #dcfce7;
+            border-left: 4px solid #22c55e;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .solution h3 {
+            color: #059669;
+            margin-top: 0;
+        }
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        .info {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        .file-list {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin: 1rem 0;
+        }
+        ul {
+            margin: 0.5rem 0;
+            padding-left: 2rem;
+        }
+        li {
+            margin: 0.5rem 0;
+        }
+        .step {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border: 2px solid #cbd5e1;
+        }
+        .step-number {
+            display: inline-block;
+            background: #2d7a3e;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 2rem;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #2d7a3e;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #475569;
+        }
+        tr:hover {
+            background: #f8fafc;
+        }
+        .old-code {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+        }
+        .new-code {
+            background: #dcfce7;
+            border-left: 4px solid #22c55e;
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .comparison-box {
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .comparison-box h4 {
+            margin-top: 0;
+            font-size: 1rem;
+        }
+        .test-files {
+            background: #eff6ff;
+            border: 2px solid #3b82f6;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        .test-files h3 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Baseball Monster Dropdown Fix</h1>
+        <p class="subtitle">Fixing the Bootstrap Class Name Conflict</p>
+
+        <div class="problem">
+            <h3>The Problem We Found</h3>
+            <p><strong>Symptom:</strong> All dropdown options are visible at once instead of being hidden until clicked.</p>
+            
+            <p><strong>Root Cause:</strong> Bootstrap CSS has its own <code>.custom-select</code> class that conflicts with our custom dropdown system.</p>
+            
+            <p><strong>What's Happening:</strong></p>
+            <ol>
+                <li>Your page loads Bootstrap CSS (which you need for other things)</li>
+                <li>Bootstrap has a <code>.custom-select</code> class for native HTML <code>&lt;select&gt;</code> elements</li>
+                <li>Our custom dropdown divs also use <code>.custom-select</code> as a class name</li>
+                <li>Bootstrap's CSS overrides our custom dropdown CSS, making all options visible</li>
+            </ol>
+        </div>
+
+        <div class="solution">
+            <h3>The Solution</h3>
+            <p>Rename all custom dropdown classes to avoid the Bootstrap conflict:</p>
+            <ul>
+                <li><code>.custom-select</code> → <code>.bm-custom-select</code></li>
+                <li><code>.custom-select-trigger</code> → <code>.bm-custom-select-trigger</code></li>
+                <li><code>.custom-select-options</code> → <code>.bm-custom-select-options</code></li>
+                <li><code>.custom-select-option</code> → <code>.bm-custom-select-option</code></li>
+                <li><code>.custom-select-value</code> → <code>.bm-custom-select-value</code></li>
+                <li><code>.custom-select-arrow</code> → <code>.bm-custom-select-arrow</code></li>
+            </ul>
+        </div>
+
+        <h2>What You Need to Update</h2>
+
+        <div class="file-list">
+            <h3>Files Provided (Already Fixed):</h3>
+            <ul>
+                <li><code>bm.light.2025-01-30.01.css</code> - Light mode base CSS</li>
+                <li><code>bm.dark.2025-01-30.01.css</code> - Dark mode base CSS</li>
+                <li><code>custom-dropdown-update.js</code> - Fixed JavaScript</li>
+            </ul>
+            
+            <h3>What You Need to Change:</h3>
+            <ul>
+                <li><strong>Server-side code</strong> that generates dropdown HTML</li>
+                <li><strong>Upload new CSS files</strong> to replace old ones</li>
+                <li><strong>Upload new JavaScript file</strong> to replace old one</li>
+            </ul>
+        </div>
+
+        <h2>Class Name Changes Reference</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Old Class Name (BROKEN)</th>
+                    <th>New Class Name (FIXED)</th>
+                    <th>Used On</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>custom-select</code></td>
+                    <td><code>bm-custom-select</code></td>
+                    <td>Wrapper div</td>
+                </tr>
+                <tr>
+                    <td><code>custom-select-trigger</code></td>
+                    <td><code>bm-custom-select-trigger</code></td>
+                    <td>Clickable button area</td>
+                </tr>
+                <tr>
+                    <td><code>custom-select-value</code></td>
+                    <td><code>bm-custom-select-value</code></td>
+                    <td>Display text (e.g., "MLB 2025")</td>
+                </tr>
+                <tr>
+                    <td><code>custom-select-arrow</code></td>
+                    <td><code>bm-custom-select-arrow</code></td>
+                    <td>Dropdown arrow icon</td>
+                </tr>
+                <tr>
+                    <td><code>custom-select-options</code></td>
+                    <td><code>bm-custom-select-options</code></td>
+                    <td>Options container</td>
+                </tr>
+                <tr>
+                    <td><code>custom-select-option</code></td>
+                    <td><code>bm-custom-select-option</code></td>
+                    <td>Individual option</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Step-by-Step Implementation</h2>
+
+        <div class="step">
+            <h3><span class="step-number">1</span> Upload New CSS Files</h3>
+            <p>Upload these files to your server and update your references:</p>
+            
+            <h4>Old References (in your HTML):</h4>
+            <pre><code>&lt;link rel="stylesheet" href="bm.light.2025-01-26.01.css"&gt;
+&lt;link rel="stylesheet" href="bm.dark.2025-01-26.01.css"&gt;</code></pre>
+
+            <h4>New References:</h4>
+            <pre><code>&lt;link rel="stylesheet" href="bm.light.2025-01-30.01.css"&gt;
+&lt;link rel="stylesheet" href="bm.dark.2025-01-30.01.css"&gt;</code></pre>
+
+            <div class="warning">
+                <strong>⚠️ Important:</strong> The CSS files alone won't fix it! You MUST also update the HTML class names (Step 3).
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">2</span> Upload New JavaScript File</h3>
+            <p>Replace your old <code>custom-dropdown.js</code> with <code>custom-dropdown-update.js</code></p>
+            
+            <pre><code>&lt;script src="custom-dropdown-update.js"&gt;&lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">3</span> Update Server-Side HTML Generation</h3>
+            
+            <p>Find the code that generates your dropdown HTML (likely in a user control or helper method) and update ALL class names.</p>
+
+            <h4>BEFORE (Current Code - BROKEN):</h4>
+            <div class="comparison">
+                <div class="comparison-box old-code">
+                    <h4>Old HTML Structure</h4>
+                    <pre><code>&lt;div class="custom-select" data-name="DataSetControl"&gt;
+    &lt;div class="custom-select-trigger"&gt;
+        &lt;span class="custom-select-value"&gt;MLB 2025&lt;/span&gt;
+        &lt;span class="custom-select-arrow"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="custom-select-options"&gt;
+        &lt;div class="custom-select-option selected" 
+             data-value="120"&gt;MLB 2025&lt;/div&gt;
+        &lt;div class="custom-select-option" 
+             data-value="130"&gt;MLB 2026&lt;/div&gt;
+        &lt;!-- more options... --&gt;
+    &lt;/div&gt;
+    &lt;select name="DataSetControl"&gt;
+        &lt;option value="120" selected&gt;MLB 2025&lt;/option&gt;
+        &lt;option value="130"&gt;MLB 2026&lt;/option&gt;
+        &lt;!-- more options... --&gt;
+    &lt;/select&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+
+                <div class="comparison-box new-code">
+                    <h4>New HTML Structure</h4>
+                    <pre><code>&lt;div class="bm-custom-select" data-name="DataSetControl"&gt;
+    &lt;div class="bm-custom-select-trigger"&gt;
+        &lt;span class="bm-custom-select-value"&gt;MLB 2025&lt;/span&gt;
+        &lt;span class="bm-custom-select-arrow"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="bm-custom-select-options"&gt;
+        &lt;div class="bm-custom-select-option selected" 
+             data-value="120"&gt;MLB 2025&lt;/div&gt;
+        &lt;div class="bm-custom-select-option" 
+             data-value="130"&gt;MLB 2026&lt;/div&gt;
+        &lt;!-- more options... --&gt;
+    &lt;/div&gt;
+    &lt;select name="DataSetControl"&gt;
+        &lt;option value="120" selected&gt;MLB 2025&lt;/option&gt;
+        &lt;option value="130"&gt;MLB 2026&lt;/option&gt;
+        &lt;!-- more options... --&gt;
+    &lt;/select&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="info">
+                <strong>Tip:</strong> Use Find & Replace in your code editor:
+                <ul>
+                    <li>Find: <code>class="custom-select</code></li>
+                    <li>Replace: <code>class="bm-custom-select</code></li>
+                </ul>
+                This will catch all instances at once!
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">4</span> Example: Complete Dropdown Implementation</h3>
+            
+            <p>Here's a complete working example showing how to generate the dropdown in ASP.NET:</p>
+
+            <pre><code>&lt;%@ Page Language="C#" %&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Baseball Monster - Player Rankings&lt;/title&gt;
+    
+    &lt;!-- Bootstrap (required for your site) --&gt;
+    &lt;link rel="stylesheet" href="bootstrap.min.css"&gt;
+    
+    &lt;!-- Baseball Monster CSS (UPDATED FILES) --&gt;
+    &lt;link rel="stylesheet" href="bm.light.2025-01-30.01.css"&gt;
+    &lt;link rel="stylesheet" href="bm.mlb.light.2025-01-26.01.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class="modern-filter-container"&gt;
+    &lt;div class="modern-filter-section"&gt;
+        &lt;div class="modern-filter-section-title"&gt;Value Settings&lt;/div&gt;
+        &lt;div class="modern-filter-row"&gt;
+            
+            &lt;!-- YEAR SELECTOR --&gt;
+            &lt;div class="modern-filter-group"&gt;
+                &lt;div class="bm-custom-select" data-name="DataSetControl"&gt;
+                    &lt;div class="bm-custom-select-trigger"&gt;
+                        &lt;span class="bm-custom-select-value"&gt;MLB 2025&lt;/span&gt;
+                        &lt;span class="bm-custom-select-arrow"&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class="bm-custom-select-options"&gt;
+                        &lt;div class="bm-custom-select-option selected" data-value="120"&gt;MLB 2025&lt;/div&gt;
+                        &lt;div class="bm-custom-select-option" data-value="130"&gt;MLB 2026&lt;/div&gt;
+                        &lt;div class="bm-custom-select-option" data-value="110"&gt;MLB 2024&lt;/div&gt;
+                        &lt;div class="bm-custom-select-option" data-value="100"&gt;MLB 2023&lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;select name="DataSetControl"&gt;
+                        &lt;option value="120" selected&gt;MLB 2025&lt;/option&gt;
+                        &lt;option value="130"&gt;MLB 2026&lt;/option&gt;
+                        &lt;option value="110"&gt;MLB 2024&lt;/option&gt;
+                        &lt;option value="100"&gt;MLB 2023&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;!-- TIME PERIOD SELECTOR --&gt;
+            &lt;div class="modern-filter-group"&gt;
+                &lt;div class="bm-custom-select" data-name="DateFilterControl"&gt;
+                    &lt;div class="bm-custom-select-trigger"&gt;
+                        &lt;span class="bm-custom-select-value"&gt;Full Season&lt;/span&gt;
+                        &lt;span class="bm-custom-select-arrow"&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class="bm-custom-select-options"&gt;
+                        &lt;div class="bm-custom-select-option selected" data-value="FullSeason"&gt;Full Season&lt;/div&gt;
+                        &lt;div class="bm-custom-select-option" data-value="LastThreeWeeks"&gt;Past 3 Weeks&lt;/div&gt;
+                        &lt;div class="bm-custom-select-option" data-value="LastMonth"&gt;Past 1 Month&lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;select name="DateFilterControl"&gt;
+                        &lt;option value="FullSeason" selected&gt;Full Season&lt;/option&gt;
+                        &lt;option value="LastThreeWeeks"&gt;Past 3 Weeks&lt;/option&gt;
+                        &lt;option value="LastMonth"&gt;Past 1 Month&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- JavaScript (UPDATED FILE) --&gt;
+&lt;script src="custom-dropdown-update.js"&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+
+        <h2>Quick Checklist</h2>
+
+        <div class="file-list">
+            <h3>Before Deployment, Verify:</h3>
+            <ul>
+                <li>Uploaded new CSS files to test server</li>
+                <li>Uploaded new JavaScript file to test server</li>
+                <li>Updated ALL HTML class names from <code>custom-select*</code> to <code>bm-custom-select*</code></li>
+                <li>Tested on test.baseballmonster.com</li>
+                <li>Verified dropdowns are hidden by default</li>
+                <li>Verified dropdowns open/close correctly</li>
+                <li>Verified form submission still works</li>
+                <li>Ready to deploy to production!</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <h3>Important Notes</h3>
+            <ul>
+                <li>The <code>data-name</code> attribute does NOT need to change</li>
+                <li>The hidden <code>&lt;select&gt;</code> element does NOT need to change</li>
+                <li>Only the CSS class names need updating</li>
+                <li>Make sure to test on your test site before production!</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>
