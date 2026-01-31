@@ -1,13 +1,13 @@
 /* 
  * Baseball Monster / Basketball Monster - Shared CSS
- * Version: bm.2025-01-26.02.dark.css
+ * Version: bm.2026-01-31.01.dark.css
  * Theme: Dark with GLOW EFFECTS
  * Sport: All (colors defined in sport-specific files)
  * Bootstrap: 4.6.1
  * 
  * Usage: Load this file first, then load sport-specific CSS (bm.nba or bm.mlb)
  * 
- * CHANGELOG from 2025-01-22.01:
+ * CHANGELOG from 2026-01-31.01:
  * - Fixed position badge colors to always show position colors (not gray)
  * - Position badges now show their position color with darker background by default
  * - Active position badges show solid color with white text and glow
@@ -1049,7 +1049,7 @@ footer a:hover {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(45, 122, 62, 0.2);
     max-height: 300px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 9999;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
