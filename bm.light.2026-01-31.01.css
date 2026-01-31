@@ -1,13 +1,13 @@
 /* 
  * Baseball Monster / Basketball Monster - Shared CSS
- * Version: bm.2025-01-26.02.light.css
+ * Version: bm.2026-01-31.01.light.css
  * Theme: Light
  * Sport: All (colors defined in sport-specific files)
  * Bootstrap: 4.6.1
  * 
  * Usage: Load this file first, then load sport-specific CSS (bm.nba or bm.mlb)
  * 
- * CHANGELOG from 2025-01-23.01:
+ * CHANGELOG from 2026-01-31.01:
  * - Fixed position badge colors to always show position colors (not gray)
  * - Position badges now show lighter border/text by default, solid color when active
  * - Improved visual feedback for position selection
@@ -1025,7 +1025,7 @@ footer a:hover {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     max-height: 300px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 9999;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
