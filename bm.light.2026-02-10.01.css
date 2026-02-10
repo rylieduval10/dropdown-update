@@ -1,13 +1,13 @@
 /* 
  * Baseball Monster / Basketball Monster - Shared CSS
- * Version: bm.2025-01-26.02.light.css
+ * Version: bm.2026-02-10.01.light.css
  * Theme: Light
  * Sport: All (colors defined in sport-specific files)
  * Bootstrap: 4.6.1
  * 
  * Usage: Load this file first, then load sport-specific CSS (bm.nba or bm.mlb)
  * 
- * CHANGELOG from 2026-02-10.01:
+ * CHANGELOG from 2025-01-23.01:
  * - Fixed position badge colors to always show position colors (not gray)
  * - Position badges now show lighter border/text by default, solid color when active
  * - Improved visual feedback for position selection
@@ -318,7 +318,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-    background: transparent;
 }
 
 .modern-filter-label {
@@ -971,13 +970,13 @@ footer a:hover {
    CUSTOM DROPDOWN STYLES
    ============================================ */
 
-.custom-select {
+.bm-custom-select {
     position: relative;
     width: 100%;
     min-width: 200px;
 }
 
-.custom-select-trigger {
+.bm-custom-select-trigger {
     background: white;
     color: #1e293b;
     border: 2px solid #e2e8f0;
@@ -994,18 +993,18 @@ footer a:hover {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.custom-select-trigger:hover {
+.bm-custom-select-trigger:hover {
     border-color: var(--brand-primary);
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.custom-select.open .custom-select-trigger {
+.bm-custom-select.open .bm-custom-select-trigger {
     border-color: var(--brand-primary);
     box-shadow: 0 0 0 4px rgba(45, 122, 62, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.custom-select-arrow {
+.bm-custom-select-arrow {
     position: absolute;
     right: 1rem;
     top: 50%;
@@ -1019,16 +1018,16 @@ footer a:hover {
     pointer-events: none;
 }
 
-.custom-select-trigger:hover .custom-select-arrow {
+.bm-custom-select-trigger:hover .bm-custom-select-arrow {
     border-top-color: var(--brand-primary);
 }
 
-.custom-select.open .custom-select-arrow {
+.bm-custom-select.open .bm-custom-select-arrow {
     transform: translateY(-50%) rotate(180deg);
     border-top-color: var(--brand-primary);
 }
 
-.custom-select-options {
+.bm-custom-select-options {
     position: absolute;
     top: calc(100% + 0.5rem);
     left: 0;
@@ -1039,22 +1038,20 @@ footer a:hover {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     max-height: 300px;
     overflow-y: auto;
-    z-index: 1000;
-    display: none;
+    z-index: 9999;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.custom-select.open .custom-select-options {
-    display: block;
+.bm-custom-select.open .bm-custom-select-options {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-.custom-select-option {
+.bm-custom-select-option {
     padding: 0.85rem 1rem;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -1065,50 +1062,50 @@ footer a:hover {
     color: #1e293b;
 }
 
-.custom-select-option:first-child {
+.bm-custom-select-option:first-child {
     border-radius: 8px 8px 0 0;
 }
 
-.custom-select-option:last-child {
+.bm-custom-select-option:last-child {
     border-radius: 0 0 8px 8px;
 }
 
-.custom-select-option:hover {
+.bm-custom-select-option:hover {
     background: linear-gradient(90deg, rgba(45, 122, 62, 0.1) 0%, rgba(45, 122, 62, 0.05) 100%);
     padding-left: 1.25rem;
 }
 
-.custom-select-option.selected {
+.bm-custom-select-option.selected {
     background: linear-gradient(90deg, rgba(45, 122, 62, 0.15) 0%, rgba(45, 122, 62, 0.08) 100%);
     font-weight: 600;
     color: var(--brand-primary);
 }
 
-.custom-select-option.selected::before {
+.bm-custom-select-option.selected::before {
     content: "✓";
     color: var(--brand-primary);
     font-weight: bold;
     margin-right: 0.5rem;
 }
 
-.custom-select-options::-webkit-scrollbar {
+.bm-custom-select-options::-webkit-scrollbar {
     width: 8px;
 }
 
-.custom-select-options::-webkit-scrollbar-track {
+.bm-custom-select-options::-webkit-scrollbar-track {
     background: #f1f5f9;
     border-radius: 10px;
 }
 
-.custom-select-options::-webkit-scrollbar-thumb {
+.bm-custom-select-options::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 10px;
 }
 
-.custom-select-options::-webkit-scrollbar-thumb:hover {
+.bm-custom-select-options::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
 }
 
-.custom-select select {
+.bm-custom-select select {
     display: none;
 }
